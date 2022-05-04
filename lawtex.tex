@@ -1,0 +1,241 @@
+% !TeX spellcheck = de_DE
+\documentclass[a4paper]{article}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{ebgaramond}
+\usepackage{newtxmath}
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage[
+backend=biber,
+style=rabelsz,
+maxbibnames=5,
+maxcitenames=5,
+backref=true
+]{biblatex}
+
+\renewcommand\thesection{\Roman{section}.}
+\renewcommand\thesubsection{\arabic{subsection}.}
+\renewcommand\thesubsubsection{\alph{subsubsection})}
+
+\let\oldfootnote\footnote
+\renewcommand\footnote[1]{%
+	\oldfootnote{\hspace{0.5em}#1}}
+
+\bibliography{bibliography}
+
+\title{RabelsZ Zitierweise in \LaTeX}
+\author{Corinna Coupette}
+\date{}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Allgemeines}
+
+Work in Progress.
+
+Aktuell unterstützt werden folgende Eintragstypen (mit den unten als unterstützt aufgeführten Feldern):
+\begin{itemize}[label=--,itemsep=0em]
+	\item \texttt{article}
+	\item \texttt{book}
+	\item \texttt{incollection}
+	\item \texttt{inproceedings}
+	\item \texttt{misc}
+\end{itemize}
+Das Verhalten für andere Eintragstypen und Felder kann unter Umständen vom gewünschten Ergebnis abweichen.
+
+Biblatex-Konfiguration dieses Dokuments:
+
+\begin{Verbatim}
+	\usepackage[
+	backend=biber,
+	style=rabelsz,
+	maxbibnames=5,
+	maxcitenames=5,
+	backref=true
+	]{biblatex}
+\end{Verbatim}
+
+Für den Fußnotensatz ist \texttt{style=rabelsz} entscheidend, wobei vorausgesetzt wird, dass folgende drei Dateien vom Compiler gefunden werden können (z.B., weil sie im selben Ordner liegen):
+\begin{itemize}[label=--,itemsep=0em]
+	\item \texttt{rabels.bbx}: Bibliographiesatz
+	\item \texttt{rabels.cbx}: Zitatsatz, aufbauend auf Bibliographiesatz
+	\item \texttt{rabels.lbx}: Lokalisierung 
+\end{itemize}
+
+\texttt{backref=true} zeigt im Literaturverzeichnis an, auf welchen Seiten ein Beitrag zitiert wurde. 
+Das kann unter anderem bei Monographien sinnvoll sein.
+
+Die Stylesheets basieren auf den Dokumenten im Ordner \texttt{base}, insbesondere auf  \texttt{verbose-note.cbx}.
+Für bessere Hackability habe ich den Inhalt dieses Files in \texttt{rabelsz.cbx} kopiert und angepasst, anstatt den \texttt{verbose-note}-Style einzubinden.
+\texttt{rabels.bbx} baut nun nur noch auf dem in jeder modernen \LaTeX\ Distribution mitgelieferten \texttt{standard.bbx} auf; \texttt{rabels.lbx} modifiziert punktuell das ebenfalls mitgelieferte \texttt{german.lbx}.
+
+Um das Verhalten von Biblatex zu verstehen und zu wissen, was man in den Styles wo und wie anpassen muss, hilft manchmal ein Blick in die \texttt{biblatex.*}-Files im Ordner \texttt{base}, 
+häufiger aber ein Blick in \texttt{standard.bbx} oder in das Biblatex-Manual im Ordner \texttt{docs}.
+
+
+\section{Umsetzung der Zitierhinweise}
+
+Quelle: \hyperref{https://www.mpipriv.de/862378/03\_Stylesheet-fuer-Autor\_innen.pdf}{}{}{Website des MPIPRIV} (zuletzt aufgerufen am \today)
+
+Dieses Dokument illustriert die Umsetzung der \emph{Zitierhinweise}, nicht aber die Umsetzung der allgemeinen Satzhinweise. 
+Die Reihenfolge der Darstellung entspricht der Reihenfolge in den Originalhinweisen. 
+
+Die in den Beispieleinträgen verwendeten Felder werden garantiert unterstützt. 
+Das Verhalten bei Verwendung anderer Felder ist nicht vollständig getestet.
+Wenn der \texttt{shorttitle} fehlt, wird im Folgezitat der \texttt{title} an seiner Statt aufgeführt.
+
+\subsection{Schrifttum}
+
+\subsubsection{Monographien, Lehrbücher etc.}
+	
+\begin{Verbatim}
+	@book{book:example,
+		title={Book Title in Long Form},
+		shorttitle={Short Title},
+		author={Lastname1, Firstname1 and Lastname2, Firstname2},
+		year={2000},
+		edition={2},
+		pagetotal={150},
+		publisher={Publisher}
+	}
+\end{Verbatim}
+	
+Erstzitat\footcite[10]{book:example}
+Folgezitat\footcite[20]{book:example}
+	
+\subsubsection{Beiträge in Sammelbänden, Festschriften etc.}
+	
+\begin{Verbatim}
+	@incollection{incollection:example, 
+		author={Lastname, Firstname}, 
+		title={Long Title of the Collection Contribution}, 
+		shorttitle={Short Coll Contrib Title},
+		booktitle={The Title of the Collection}, 
+		publisher={Publisher}, 
+		editor={Editor1Last, Editor1First and Editor2Last, Editor2First}, 
+		edition={2},
+		year={2020}, 
+		pages={1--50}
+	}
+\end{Verbatim}
+	
+Erstzitat\footcite[10]{incollection:example}
+Folgezitat\footcite[20]{incollection:example}
+
+\begin{Verbatim}
+	@inproceedings{inproceedings:example,
+		title={Long Title of the Proceedings Contribution},
+		shorttitle={Short Proc Contrib Title},
+		author={SomeAuthorLast, SomeAuthorFirst},
+		booktitle={Title of the Proceedings},
+		pages={1--50},
+		year={2015}
+	}
+\end{Verbatim}
+
+Erstzitat\footcite[10]{inproceedings:example}
+Folgezitat\footcite[20]{inproceedings:example}
+
+\subsubsection{Kommentare, Handbücher, Enzyklopädien etc.}
+
+Erstzitat
+Folgezitat
+
+\subsubsection{Zeitschriften, Archivzeitschriften und Jahrbücher mit Bandzahl}
+
+\begin{Verbatim}
+	@article{article:example,
+		title={Long Title of the Article},
+		shorttitle={Short Article Title},
+		author={Author1Last, Author1First and Author2Last, Author2First},
+		journal={Name of the Journal},
+		year={2010},
+		volume={10},
+		number={2},
+		pages={1--50},
+		publisher={Publisher}
+	}
+\end{Verbatim}
+
+Erstzitat\footcite[10]{article:example}
+Folgezitat\footcite[20]{article:example}
+
+	
+\subsection{Internetquellen, Zeitungen, Materialien etc.}
+
+\begin{Verbatim}
+	@misc{misc:example,
+		title={Title of Misc Publication},
+		author={Lastname, Firstname},
+		year={2005},
+		howpublished={Publication Venue},
+		doi={org/identifier/reference}
+	}	
+\end{Verbatim}
+
+Erstzitat\footcite{misc:example}
+Folgezitat\footcite{misc:example}
+	
+\subsection{Gerichtsentscheidungen}
+	
+Erstzitat
+Folgezitat
+
+\subsection{Gesetzliche Bestimmungen etc.}
+	
+Erstzitat
+Folgezitat
+
+
+\section{Sonstiges}
+
+\subsection{Fußnotenvarianten}
+
+Fußnote mit Erläuterung, die \texttt{footcites} benutzt:\footcites[So etwa][10]{book:example}[][20]{inproceedings:example}[anderer Ansicht][50]{article:example}
+
+\begin{Verbatim}[breaklines=true]
+	\footcites[So etwa][10]{book:example}[][20]{inproceedings:example}[anderer Ansicht][50]{article:example}
+\end{Verbatim}
+
+Fußnote mit Erläuterung, die \texttt{footnote} und \texttt{cite} benutzt (tendenziell flexibler):\footnote{So etwa \cite[10]{book:example} und \cite[20]{inproceedings:example}; anderer Ansicht \cite[50]{article:example}.
+}
+
+\begin{Verbatim}[breaklines=true]
+	\footnote{So etwa \cite[10]{book:example} und \cite[20]{inproceedings:example}; anderer Ansicht \cite[50]{article:example}.
+	}
+\end{Verbatim}
+
+\subsection{Styling}
+
+Anpassung der Nummerierung (funktioniert ähnlich für alle Dokumentebenen):
+\begin{Verbatim}
+	\renewcommand\thesection{\Roman{section}.}
+	\renewcommand\thesubsection{\arabic{subsection}.}
+	\renewcommand\thesubsubsection{\alph{subsubsection})}
+\end{Verbatim}
+
+Einrückung der Fußnoten:
+\begin{Verbatim}
+	\let\oldfootnote\footnote
+	\renewcommand\footnote[1]{%
+		\oldfootnote{\hspace{0.5em}#1}}
+\end{Verbatim}
+
+\section{Beispiele aus der Praxis}
+
+Der Beitrag, mit dem dieses Projekt begann:\\
+
+\noindent\cite{coupette:2022:rechtsstrukturvergleichung}
+
+\newpage
+
+\printbibliography
+
+\end{document}
