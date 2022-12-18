@@ -1,0 +1,261 @@
+\documentclass{phdlaw}
+
+% ADDITIONAL PACKAGES
+\usepackage[letterspace=8]{microtype} % 0.008 em = 0.1 pt
+\usepackage{draftwatermark}
+\usepackage{caption}
+\captionsetup[table]{position=bottom}
+\usepackage[total={113mm,183mm}, left=4.80cm, right=4.90cm, top=5.70cm, bottom=5.70cm]{geometry}
+\usepackage{bookmark} % must be loaded after hyperref, to fix bookmark issues after appendix
+
+% INDEX PRETTIFICATION
+\usepackage[columnsep=0.6cm,itemlayout=abshang,indentunit=0.4cm,hangindent=0.4cm,subsubindent=0.8cm]{idxlayout}
+
+% COMMENT AND HIDDENTEXT ENVIRONMENT
+
+\newcommand{\comm}[1]{}
+\newcommand{\hide}[1]{}
+\newcommand{\name}[1]{\emph{#1}}
+\newcommand{\lawsource}[1]{#1}
+\newcommand{\entsch}[1]{#1}
+
+% REMOVE PAGE NUMBER ON FIRST PAGES
+\makeatletter
+\renewcommand\ps@plain{\let\@mkboth\@gobbletwo
+	\let\@oddhead\@empty
+	\def\@oddfoot{\reset@font\hfil}
+	\let\@evenhead\@empty\let\@evenfoot\@oddfoot}
+\makeatother
+
+% LINE BREAK CONTROL
+\usepackage[defaultlines=2,all]{nowidow}
+
+
+% QUOTE ENVIRONMENT
+\newenvironment{myquote}%
+{\footnotesize\list{}{\leftmargin=0.4cm\rightmargin=0.4cm}\item[]}%
+{\endlist}
+
+% NO INDENT AFTER FLOATS
+\makeatletter
+\renewcommand\float@endH{\@endfloatbox\vskip\intextsep
+	\if@flstyle\setbox\@currbox\float@makebox\columnwidth\fi
+	\box\@currbox\vskip\intextsep\relax\@doendpe}
+\makeatother
+
+% BIBLIOGRAPHY
+
+\addbibresource{bibliography.bib}
+
+% GLOSSARY SETTINGS
+%\loadglsentries{glossary.tex}
+%\makeglossaries
+
+% DOCUMENT ENVIRONMENTS
+
+% Example Environment
+%\newtheorem{example}{Beispiel}[chapter]
+
+% FASTER COMPILATION
+%\includeonly{text/ch1,text/ch2,text/ch3}%,../bibliography.bib}
+
+
+% EINblenden, falls / statt , bzw und zwischen Autorennamen stehen soll
+% FALLS das auch im Haupttext funktionieren soll, ggf in phdlaw.cls integrieren
+%\renewcommand{\multinamedelim}{/} % falls es der / zwischen Autoren sein soll
+%\renewcommand{\finalnamedelim}{\multinamedelim} % falls es der / zwischen Autoren sein soll
+
+%\renewcommand{\textfraction}{0.0}	% allow minimal text w. figs
+%\renewcommand{\topfraction}{1.0}	% max fraction of floats at top
+%\renewcommand{\bottomfraction}{1.0}	% max fraction of floats at bottom
+
+\usetikzlibrary{positioning,chains,fit,shapes,calc} % TIKZ Libraries
+
+% HEADER SETUP
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\chaptername\ \thechapter.\ #1}}{}}
+% HEADER SETUP CONT
+\fancyhead[LE,RO]{\normalsize\thepage}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+\fancyhead[CO]{\footnotesize\itshape\nouppercase{\rightmark}}
+\fancyhead[CE]{\footnotesize\itshape\nouppercase{\leftmark}}
+
+\usepackage{chngpage}
+\usepackage{tablefootnote}
+\usepackage{wrapfig}
+
+% HYPHENATION RULES
+%\hyphenation{...}
+
+
+% GLOSSARIES
+\makeatletter 
+\renewcommand{\glossentry}[2]{% 
+	\settowidth{\glstreeindent}{\textbf{\@glswidestname\space}}% 
+	\hangindent\glstreeindent 
+	\parindent\glstreeindent 
+	\makebox[0pt][r]{\makebox[\glstreeindent][l]{% 
+			\glsentryitem{#1}\textbf{\glstarget{#1}{\glossentryname{#1}}}}}% 
+	\ifglshassymbol{#1}{\space(\glossentrysymbol{#1})}{}% 
+	\glossentrydesc{#1}\glspostdescription \space #2\par 
+}% 
+\makeatother 
+
+\makeglossaries
+%\setglossarypreamble{...}
+%\loadglsentries{...}
+
+% BLANK PAGE DEFINITION
+\def\blankpage{%
+	\clearpage%
+	\thispagestyle{empty}%
+	\null%
+	\clearpage}
+
+% STICHWORTVERZEICHNIS
+\makeindex
+\makeatletter
+\renewcommand{\subitem}{\@idxitem\hspace*{0.03cm}--\hspace*{0.22cm}}
+\renewcommand{\subsubitem}{\@idxitem\hspace*{0.43cm}--\hspace*{0.22cm}}
+\makeatother
+
+% ADDITIONAL INFO FOR PDF READERS
+\hypersetup{
+	pdftitle={...},
+	pdfauthor={...},
+}
+
+% PRENOTE FOR LOF
+\newcommand{\addprenote}[2]{%
+	\addtocontents{#1}{%
+		\protect\begin{quotation}
+			\noindent\hspace{-2pt}\ignorespaces\protect #2
+			\protect\end{quotation}%
+	}%
+}
+
+% DOCUMENT
+\begin{document}
+\setlength\emergencystretch{2em}
+
+\captionsetup[figure]{format=hang, font=small, justification=justified, singlelinecheck=true, font=footnotesize}
+\captionsetup[table]{format=hang, font=small, justification=justified, singlelinecheck=true, font=footnotesize}		
+\setlength{\abovecaptionskip}{6pt}
+\setlength{\textfloatsep}{12pt plus2pt minus2pt}
+
+% TITLE PAGE (NOT INCLUDED IN PUBLICATION DOC)
+\author{...}
+\title{...}
+\date{...}
+
+% WATERMARK (FOR DRAFT VERSIONS)
+\SetWatermarkText{}
+\SetWatermarkScale{0.075}
+\SetWatermarkAngle{0.0}	
+\SetWatermarkLightness{0.5}
+%\SetWatermarkText{Draft \today{} (...)}
+\SetWatermarkVerCenter{1.25\textheight}
+	
+%\lstset{language=Python,commentstyle=\color{mygreen},numberstyle=\tiny\color{mygray},stringstyle=\color{mymauve}}
+
+
+\frontmatter
+%\pagenumbering{gobble}
+%\begin{titlepage}
+%	\maketitle
+%\end{titlepage}
+% DEDICATION - PAGE V
+\pagenumbering{Roman}
+\input{text/dedication}
+%\blankpage
+% PREFACE - PAGE VII
+\input{text/preface}
+\blankpage
+% TOC - PAGE IX
+\pagenumbering{Roman}
+\setcounter{page}{9}
+\phantomsection
+%\addcontentsline{toc}{section}{\normalfont Inhaltsverzeichnis}
+\pdfbookmark{\contentsname}{toc}
+\tableofcontents
+\newpage
+\bookmarksetup{startatroot}
+\phantomsection
+\listoftables
+\addcontentsline{toc}{section}{\normalfont Tabellenverzeichnis}
+\addtocontents{toc}{\protect\addvspace{-12pt}}
+\newpage
+\bookmarksetup{startatroot}
+\phantomsection
+\addcontentsline{toc}{section}{\normalfont Abbildungsverzeichnis}
+\addprenote{lof}{\protect\vspace*{-10pt}Eine hochauflösende Ansicht aller Graphiken findet sich unter:}
+\addprenote{lof}{...}
+\listoffigures 
+%{\listoffigures 
+%	\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+%	\let\cleardoublepage\clearpage}
+%\newpage
+%\blankpage
+
+% CHAPTERS - ENSURE ODD PAGE FOR START OF FIRST
+\mainmatter
+\pagenumbering{arabic}
+\include{text/ch1}
+\include{text/ch2}
+\include{text/ch3}
+\include{text/ch4}
+\include{text/ch5}
+% APPENDIX ETC
+%\clearpage
+\vspace*{60pt}
+\chapter*{Appendix}
+\phantomsection
+\addcontentsline{toc}{chapter}{Appendix}
+\addtocontents{toc}{\protect\addvspace{-12pt}}
+\clearpage
+{\let\cleardoublepage\clearpage
+	\fancyhead[CE]{\footnotesize\itshape\nouppercase{\rightmark}}
+\begin{appendices}
+	\input{text/appendix}
+\end{appendices}
+%\addcontentsline{toc}{chapter}{Appendix}
+}
+% FOR THE PDF VIEWER
+\bookmarksetup{startatroot}
+\backmatter
+% BIBLIOGRAPHY
+% NOCITES FOR COLLECTIONS COULD GO HERE
+% IF DEEMED ABSOLUTELY NECESSARY
+% ...
+% LIT - MAKE SURE THIS STARTS ON ODD PAGE
+\phantomsection
+\addcontentsline{toc}{section}{\normalfont Literatur}
+\addtocontents{toc}{\protect\addvspace{-12pt}}
+\footnotesize
+\printbibliography
+
+% GLOSSARY
+\glssetwidest[0]{...}
+\glssetwidest[1]{...}
+\glossarystyle{alttree}
+\glsaddall
+\raggedright
+
+\newpage
+\phantomsection
+\addcontentsline{toc}{section}{\normalfont Glossar}
+\addtocontents{toc}{\protect\addvspace{-12pt}}
+\printglossary[type=main]
+
+% INDEX
+\blankpage
+\newpage
+\phantomsection
+\addcontentsline{toc}{section}{\normalfont Sachregister}
+\renewcommand{\indexname}{Sachregister}
+\printindex
+
+\end{document}
